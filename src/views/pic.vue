@@ -29,9 +29,9 @@
         class="swiper"
         effect="coverflow"
       >
-        <swiper-slide v-for="item in 4" :key="item">
+        <swiper-slide v-for="item in 9" :key="item">
           <div class="picture-list">
-            <img :src="require(`../assets/${item + 1}.jpg`)" />
+            <img :src="require(`../assets/${item}.jpg`)" />
           </div>
         </swiper-slide>
         <!-- <swiper-slide
@@ -52,7 +52,7 @@ import SwiperCore, {
   Autoplay,
   Pagination,
   EffectCoverflow,
-  Navigation
+  Navigation,
 } from "swiper";
 import { Swiper, SwiperSlide } from "swiper/vue";
 require("swiper/swiper.min.css");
@@ -64,13 +64,16 @@ export default {
   name: "MySwiper",
   components: {
     Swiper,
-    SwiperSlide
+    SwiperSlide,
   },
   setup() {
+    const isMobile = navigator.userAgent.match(
+      /(phone|pad|pod|iPhone|iPod|ios|iPad|Android|Mobile|BlackBerry|IEMobile|MQQBrowser|JUC|Fennec|wOSBrowser|BrowserNG|WebOS|Symbian|Windows Phone)/i
+    );
     let swiper_options = reactive({
       autoplay: {
         disableOnInteraction: false, // 鼠标滑动后继续自动播放
-        delay: 4000 //4秒切换一次
+        delay: 4000, //4秒切换一次
       },
       speed: 500, //切换过渡速度
       loop: true,
@@ -80,22 +83,22 @@ export default {
       coverflowEffect: {
         // rotate: 0, //slide做3d旋转时Y轴的旋转角度。默认50。
         stretch: 50, //每个slide之间的拉伸值（距离），越大slide靠得越紧。 默认0。
-        depth: 100, //slide的位置深度。值越大z轴距离越远，看起来越小。 默认100。
-        modifier: 1 //depth和rotate和stretch的倍率，相当于            depth*modifier、rotate*modifier、stretch*modifier，值越大这三个参数的效果越明显。默认1。
+        depth: 0, //slide的位置深度。值越大z轴距离越远，看起来越小·z。 默认100。
+        modifier: 1, //depth和rotate和stretch的倍率，相当于            depth*modifier、rotate*modifier、stretch*modifier，值越大这三个参数的效果越明显。默认1。
         // slideShadows: false, //开启slide阴影。默认 true。
       },
       navigation: {
         nextElRef: ".swiper-button-next",
-        prevElRef: ".swiper-button-prev"
+        prevElRef: ".swiper-button-prev",
       },
       pagination: {
         clickable: true,
-        dynamicBullets: true
-      }
+        dynamicBullets: true,
+      },
     });
     // 将swiper_options返回给模板中的swiper组件使用
-    return { swiper_options };
-  }
+    return { swiper_options, isMobile };
+  },
 };
 </script>
 <style scoped lang="less">
@@ -160,5 +163,8 @@ export default {
 }
 /deep/.swiper-pagination-bullet-active {
   background: #ffffff;
+}
+/deep/.swiper-wrapper {
+  align-items: center;
 }
 </style>
